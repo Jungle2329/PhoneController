@@ -15,5 +15,6 @@ public class AdbHelper {
         AndroidDebugBridge.addDeviceChangeListener(listener);
         AndroidDebugBridge.initIfNeeded(false);
         AndroidDebugBridge.createBridge("adb", false);
+
     }
 }

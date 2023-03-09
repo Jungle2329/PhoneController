@@ -1,9 +1,7 @@
 package com.ashen.controll.controller;
 
-import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.IDevice;
 import com.ashen.controll.ui.MainController;
-import com.ashen.controll.adb.AdbHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +35,6 @@ public class AppWatchAd extends Thread {
 
     private AppWatchAd() {
         start();
-        initAdb();
     }
 
     @Override
@@ -58,25 +55,6 @@ public class AppWatchAd extends Thread {
         }
     }
 
-
-    private void initAdb() {
-        AdbHelper.init(new AndroidDebugBridge.IDeviceChangeListener() {
-            @Override
-            public void deviceConnected(IDevice device) {
-                addDevices(device);
-            }
-
-            @Override
-            public void deviceDisconnected(IDevice device) {
-                removeDevices(device);
-            }
-
-            @Override
-            public void deviceChanged(IDevice device, int changeMask) {
-
-            }
-        });
-    }
 
     public void swipeStart() {
         log("开始执行");

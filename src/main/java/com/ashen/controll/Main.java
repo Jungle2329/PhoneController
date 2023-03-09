@@ -1,6 +1,5 @@
 package com.ashen.controll;
 
-import com.ashen.controll.manager.LogManager;
 import com.ashen.controll.ui.MainController;
 
 /**
@@ -15,6 +14,5 @@ public class Main {
     public static void main(String[] args) {
         MainController controller = new MainController();
         controller.create(args);
-        LogManager.getInstance().bindView(controller);
     }
 }

@@ -26,19 +26,16 @@ import javax.swing.WindowConstants;
  */
 public class MainController {
 
-    private TextArea logsArea;
     private static long postInterval = 10000;
 
     public void create(String[] args) {
         createWindow();
-        logsArea.setText("欢迎使用AppSwiper");
     }
 
     private void createWindow() {
-        logsArea = createTextArea();
         // 状态框
         JPanel mainWindow = new JPanel(new GridLayout(4, 1));
-        mainWindow.add(logsArea);
+        mainWindow.add(createTextArea());
         mainWindow.add(createDevicesView());
         mainWindow.add(createIntervalView());
         mainWindow.add(createStartStopView());
@@ -46,7 +43,7 @@ public class MainController {
         JFrame jFrame = new JFrame();
         jFrame.setLayout(new BorderLayout());
         jFrame.add(mainWindow, BorderLayout.CENTER);
-        jFrame.setTitle("PhoneController");
+        jFrame.setTitle("PhoneController V1.1.0");
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setSize(new Dimension(600, 500));
@@ -76,13 +73,14 @@ public class MainController {
 
     private JPanel createDevicesView() {
         JPanel option = new JPanel(new GridLayout(1, 2));
-        JTextField field = new JTextField();
-        field.setHorizontalAlignment(JTextField.CENTER);
-        DeviceManager.getInstance().getDevices().forEach(s -> {
-            field.setText(s + "\n");
-            System.out.println(s);
-        });
-
+        TextArea statusArea = new TextArea();
+        statusArea.setColumns(30);
+        statusArea.setRows(150);
+        statusArea.setBackground(Color.WHITE);
+        statusArea.setFont(new Font("宋体", Font.PLAIN, 16));
+        statusArea.setEditable(true);
+        DeviceManager.getInstance().bindView(statusArea);
+        option.add(statusArea);
         return option;
     }
 
@@ -93,6 +91,13 @@ public class MainController {
         return jPanel;
     }
 
+    /**
+     * 开始按钮
+     *
+     * @return
+     * @author Ashen
+     * @date 2023/3/9 11:16
+     **/
     private JButton createStartBottom() {
         JButton jButton = new JButton("开始");
         jButton.setSize(new Dimension(30, 20));
@@ -102,6 +107,13 @@ public class MainController {
         return jButton;
     }
 
+    /**
+     * 停止按钮
+     *
+     * @return
+     * @author Ashen
+     * @date 2023/3/9 11:16
+     **/
     private JButton createStopBottom() {
         JButton jButton = new JButton("停止");
         jButton.setSize(new Dimension(30, 20));
@@ -109,13 +121,21 @@ public class MainController {
         return jButton;
     }
 
+    /**
+     * TextArea
+     *
+     * @return
+     * @author Ashen
+     * @date 2023/3/9 11:16
+     **/
     private TextArea createTextArea() {
         TextArea log = new TextArea("欢迎使用AppSwiper");
         log.setColumns(30);
         log.setRows(150);
         log.setBackground(Color.WHITE);
-        log.setFont(new Font("宋体", Font.BOLD, 16));
+        log.setFont(new Font("宋体", Font.PLAIN, 16));
         log.setEditable(true);
+        LogManager.getInstance().bindView(log);
         return log;
     }
 
@@ -123,7 +143,4 @@ public class MainController {
         return postInterval;
     }
 
-    public TextArea getLogsArea() {
-        return logsArea;
-    }
 }

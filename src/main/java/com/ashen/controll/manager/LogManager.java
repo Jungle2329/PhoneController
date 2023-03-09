@@ -1,7 +1,5 @@
 package com.ashen.controll.manager;
 
-import com.ashen.controll.ui.MainController;
-
 import java.awt.TextArea;
 
 /**
@@ -21,13 +19,15 @@ public class LogManager {
         return ourInstance;
     }
 
-    public void bindView(MainController controller) {
-        logsArea = controller.getLogsArea();
+    public void bindView(TextArea logsArea) {
+        this.logsArea = logsArea;
     }
 
     public void log(String msg) {
-        logsArea.append("\n");
-        logsArea.append(msg);
+        if (logsArea != null) {
+            logsArea.append("\n");
+            logsArea.append(msg);
+        }
     }
 
 }
