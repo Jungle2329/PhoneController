@@ -1,4 +1,8 @@
-package com.ashen.controll;
+package com.ashen.controll.ui;
+
+import com.ashen.controll.controller.AppSwiper;
+import com.ashen.controll.manager.DeviceManager;
+import com.ashen.controll.manager.LogManager;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -48,11 +52,6 @@ public class MainController {
         jFrame.setSize(new Dimension(600, 500));
         jFrame.setResizable(true);
         jFrame.setLocationRelativeTo(jFrame.getOwner());
-
-        AppSwiper.getInstance().addLogListener(log -> {
-            logsArea.append("\n");
-            logsArea.append(log);
-        });
     }
 
     private JPanel createIntervalView() {
@@ -66,7 +65,7 @@ public class MainController {
             try {
                 postInterval = Integer.parseInt(text);
                 postInterval *= 1000;
-                AppSwiper.getInstance().log(String.format("更新运行间隔为%s秒", text));
+                LogManager.getInstance().log(String.format("更新运行间隔为%s秒", text));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,7 +78,7 @@ public class MainController {
         JPanel option = new JPanel(new GridLayout(1, 2));
         JTextField field = new JTextField();
         field.setHorizontalAlignment(JTextField.CENTER);
-        AppSwiper.getInstance().getDevices().forEach(s -> {
+        DeviceManager.getInstance().getDevices().forEach(s -> {
             field.setText(s + "\n");
             System.out.println(s);
         });
@@ -122,5 +121,9 @@ public class MainController {
 
     public static long getPostInterval() {
         return postInterval;
+    }
+
+    public TextArea getLogsArea() {
+        return logsArea;
     }
 }

@@ -1,7 +1,8 @@
-package com.ashen.controll;
+package com.ashen.controll.controller;
 
 import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.IDevice;
+import com.ashen.controll.ui.MainController;
 import com.ashen.controll.adb.AdbHelper;
 
 import java.io.BufferedReader;
@@ -19,21 +20,22 @@ import java.util.Date;
  * @version 1.0.0
  * @Description
  */
-public class AppSwiper extends Thread {
+public class AppWatchAd extends Thread {
 
-    public static final String appSwipe = "adb -s %s shell input swipe 300 1000 300 30";
-    private static final AppSwiper ourInstance = new AppSwiper();
+    public static final String appBack = "adb -s %s shell input keyevent 4";
+    public static final String appTap = "adb -s %s shell input tap 104 1298";
+    private static final AppWatchAd ourInstance = new AppWatchAd();
 
     private LogListener logListener;
     private boolean running = false;
 
     private ArrayList<String> devices = new ArrayList<>();
 
-    static AppSwiper getInstance() {
+    public static AppWatchAd getInstance() {
         return ourInstance;
     }
 
-    private AppSwiper() {
+    private AppWatchAd() {
         start();
         initAdb();
     }
@@ -43,19 +45,19 @@ public class AppSwiper extends Thread {
         super.run();
         while (true) {
             if (running) {
-                log("exe start");
-                devices.forEach(s -> {
-                    runCmd(String.format(AppSwiper.appSwipe, s), s);
-                });
-                log("exe end");
-            }
-            try {
-                Thread.sleep(MainController.getPostInterval());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                log("开始看广告");
+                execAllDevices(AppWatchAd.appTap);
+                try {
+                    Thread.sleep(MainController.getPostInterval());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                execAllDevices(AppWatchAd.appBack);
+                log("结束看广告");
             }
         }
     }
+
 
     private void initAdb() {
         AdbHelper.init(new AndroidDebugBridge.IDeviceChangeListener() {
@@ -84,6 +86,12 @@ public class AppSwiper extends Thread {
     public void swipeStop() {
         log("停止执行");
         running = false;
+    }
+
+    private void execAllDevices(String func) {
+        devices.forEach(s -> {
+            runCmd(String.format(func, s), s);
+        });
     }
 
     public void runCmd(String cmd, String devices) {

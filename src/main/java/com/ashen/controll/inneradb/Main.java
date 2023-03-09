@@ -16,26 +16,6 @@ public class Main {
             @Override
             public void deviceConnected(IDevice iDevice) {
                 System.out.println(iDevice);
-//                try {
-//                    iDevice.executeShellCommand("adb shell input swipe 300 1000 300 30", new MultiLineReceiver() {
-//                        @Override
-//                        public void processNewLines(String[] lines) {
-//                            System.out.println(lines);
-//                        }
-//
-//                        public boolean isCancelled() {
-//                            return false;
-//                        }
-//                    });
-//                } catch (TimeoutException e) {
-//                    e.printStackTrace();
-//                } catch (AdbCommandRejectedException e) {
-//                    e.printStackTrace();
-//                } catch (ShellCommandUnresponsiveException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
             }
 
             @Override
